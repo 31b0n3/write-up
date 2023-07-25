@@ -58,6 +58,6 @@ vì khi lưu vào memory thì do là little edian nên sẽ lấy ngược lại
 `{` XOR `Q` = 42
 Ta cùng nhập thử vào chương trình xem sao
 
-![](./img/result.png)
+![](./img/Result.png)
 
 FLAG:  flag{easy_baby_challenge}
