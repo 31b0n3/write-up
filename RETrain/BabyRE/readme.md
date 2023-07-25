@@ -5,20 +5,25 @@
 Đề bài cho ta file PE32 được code bằng C/C++:
 
 ![](./img/die.png)
+## BABYRE.EXE
+Khi ta chạy chương trình thì sẽ hiện ra như này
 
+![](./img/babyreexe.png)
+
+Như vậy ta biết được flag có dạng là flag{}
 ## IDA32
 
 Load chương trình vào ida, bắt đầu từ hàm main:
 
 ![](./img/main.png)
 
-Đầu tiên, ở dòng 13 `v8 = xmmword_41B6E0` tức là biến xmmword_41B6E0 được truyền vào thanh ghi xmm0 128bit rồi sau đó truyền vào v8. Còn **"41B6E0"** là offset của v8
+Đầu tiên, ở dòng 13 `v8 = xmmword_41B6E0` tức là biến xmmword_41B6E0 được truyền vào thanh ghi xmm0 128bit rồi sau đó lưu tại v8. Còn **"41B6E0"** là offset của v8
 
-Ấn vào dòng đó thì chúng ta có thể xem được giá trị của v8:
+Ấn vào biến thì chúng ta có thể xem được giá trị của v8:
 
 ![](./img/offset.png)
 
-Thấy giá trị theo các byte như `67, 75, 6E,...` ta thấy các giá trị không quá **7F** nên đây có thể là các kí tự. Mình ấn `R` trong ida để hiển thị giá trị theo kiểu char:
+Thấy giá trị theo các byte như `67, 75, 6E,...` ta thấy các giá trị không quá **7F** nên đây có thể là các kí tự ASCII. Mình ấn `R` trong ida để hiển thị giá trị theo kiểu char:
 
 ![](./img/v8.png)
 
@@ -51,13 +56,11 @@ Thấy dòng 26 biểu thức loằng ngoằng quá nên chuyển sang bên masm
 Vậy chốt lại đây là vòng lặp for dùng XOR để mã hóa kí tự nhập vào. 
 Sau khi đọc đoạn này xong thì biểu thức loằng ngoằng kia chỉ là sử dụng phép toán XOR giữa từng kí tự của chuỗi v8 với các kí tự chúng ta nhập vào trong mảng v12. Vậy nên để tìm ra chính xác 5 số cần nhập vào thì chúng ta chỉ cần lấy kết quả XOR với chuỗi v8 là được
 
-![](./img/babyreexe.png)
-
-Khi chạy chương trình thì thấy flag có form như trên, nhận thấy 5 kí tự đầu là `f`, `l` , `a`, `g`, `{` nên mình sẽ lấy 5 kí tự đó XOR với 5 kí tự của `v8` 
+Ta lấy 5 kí tự `f`, `l` , `a`, `g`, `{`  với 5 kí tự của `v8` (`b`, `d`, `n`, `p`,`Q`)
 
 ![](./img/hex.png)
 
-vì khi lưu vào memory thì do là little edian nên sẽ lấy ngược lại khi đó ta có
+Khi lưu vào memory thì do là little edian nên sẽ lấy ngược lại
 
 `f` XOR `b` = 4
 
