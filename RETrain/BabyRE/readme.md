@@ -47,7 +47,7 @@ Vậy chốt lại thì vòng lặp for này bắt chúng ta nhập 5 lần số
 
 ![](./img/for.png)
 
-Con trỏ `v5` trỏ tới địa chỉ của (`v8`("gunmifun|iaQpndb")) + `j`. Rồi sau đó `v5` = `v5` XOR mảng `v12`(mảng lưu kí tự đã nhập), `j % 5u` là để lấy phần tử từ 0 đến 4.
+Con trỏ v5 được gán thành địa chỉ của từng phần tử trong v8("gunmifun|iaQpndb"). Rồi sau đó `v5` XOR mảng `v12`(mảng lưu kí tự đã nhập), `j % 5u` là để lấy phần tử từ 0 đến 4. XOR xong thì lưu kết quả vào v5
 
 Thấy dòng 26 biểu thức loằng ngoằng quá nên chuyển sang bên masm xem thế nào
 
