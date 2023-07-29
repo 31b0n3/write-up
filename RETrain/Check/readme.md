@@ -134,7 +134,7 @@ for o in range(1,150):
 ```
 Chương trình in ra kết quả như sau:
 
-![](./img/while.png)
+![](./img/While.png)
 
 Nhìn vào output thì mình suy ra quy luật của hàm `enc()` là khi số nhập vào tăng thêm 1 thì output sẽ tăng thêm 2, output = 1 khi input = output. Ta thấy output = 1 khi input là luỹ thừa của 2. Từ đó mình viết được hàm để reverse 
 
