@@ -40,7 +40,7 @@ else:
 Đây là josephus problem nhưng khi làm bài thì mình chưa biết. 
 Nhìn tổng thể thì bài yêu cầu chúng ta nhập flag và mã hoá, xử lý flag đó và đến cuối cùng so sánh với chuỗi có sẵn. Nếu đúng thì cho biết rằng flag đó đúng.
 
-##Detail
+## Detail
 
 ```python
 print(r"""
