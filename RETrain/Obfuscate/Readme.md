@@ -251,6 +251,47 @@ for bf in range(0x100):
 
 **Flag**: `pctf{ok_nothing_too_fancy_there!}`
 
+## Z3
+Ngoài cách trên, ta có thể sử dụng hàm **Z3** để tìm ra flag:
+
+```python
+from z3 import *
+
+loc_4008EB =[
+  0x48, 0x5F, 0x36, 0x35, 0x35, 0x25, 0x14, 0x2C, 0x1D, 0x01, 
+  0x03, 0x2D, 0x0C, 0x6F, 0x35, 0x61, 0x7E, 0x34, 0x0A, 0x44, 
+  0x24, 0x2C, 0x4A, 0x46, 0x19, 0x59, 0x5B, 0x0E, 0x78, 0x74, 
+  0x29, 0x13, 0x2C
+]
+
+flag = [BitVec(f'{i:2}', 8) for i in range(len(loc_4008EB))] #khoi tao index cho flag 
+s = Solver()
+# giới hạn flag chỉ nằm trong mã ascii in ra được
+for f in flag:
+    s.add(f > 0x20, f <= 0x7f)
+lengh = len(flag)
+r9 = 0x50
+for i in range(0x539):
+    r11 = 0
+    while r11 < lengh :
+        flag[r11] ^= r9 
+        r9 ^= flag[r11]
+        r11 +=1
+#add thêm điều kiện để lấy flag đúng 
+for f, d in zip(flag, loc_4008EB):
+    s.add(f == d)
+#nếu thành công thì in ra sat và ngược lại là unsat
+print(s.check())
+#s.model là list hợp lệ chương trình tính được
+m = s.model()
+# ví list bị đảo lộn thứ tự nên ta sẽ sắp xếp lại theo index cho đúng thứ tự và lưu vào model
+model = sorted([(d, m[d]) for d in m], key = lambda x: str(x[0]))
+for m in model:
+     print(chr(m[1].as_long()), end='')
+```
+
+
+
 
 
 
