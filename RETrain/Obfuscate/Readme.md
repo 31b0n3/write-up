@@ -47,6 +47,7 @@ Sau khi vào thì ta đến thư mục chứa file `linux_sever64` và run file 
 ![](./img/debug.png)
 
 Ở đây `Parmameters` để ta nhập giá trị của `argv`; `Port` thì ta ghi port mà ở cmd hiện; `Hostname` thì ta ghi `localhost` còn nếu chạy trên máy ảo thì nhập địa chỉ ip ở bên cmd vào. Ví dụ:
+
 ![](./img/vm.png) 
 
 Sau khi mình debug và chạy đến hàm `loc_4006E5` thì ta thấy code đã thay đổi
