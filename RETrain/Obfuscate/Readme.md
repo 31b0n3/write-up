@@ -24,13 +24,10 @@ Ví dụ:
 ``` 
 crackmexxx yourflag
 ```
-![](./img/loc.png)
-
-Ta có thể thấy ở dòng 11 thì chương trình ghi giá trị vào tại địa chỉ `loc_4006E5` mà ở dòng 13 lại gọi hàm `loc_4006E5` nên có thể ida đã nhận dạng code sai. Để tìm hiểu nguyên nhân thì mình nhấn đúp vào `loc_4006E5`
 
 ![](./img/loc_4006E5.png)
 
-Ta có thể thấy ida không nhận ra được code và nhìn code ida nhận diện rất lạ. Nên mình sẽ thử debug xem chương trình làm gì với những dòng code này.
+Ta có thể thấy ida không nhận ra được code và nhìn code ida nhận diện rất lạ => hàm `loc_4006E5` là shellcode bị mã hóa. Nên mình sẽ thử debug xem chương trình làm gì với những dòng code này.
 
 Do đây không phải file exe nên ta không thể debug bằng **local window debugger** được nên chúng ta phải dùng **Remote Linux Debugger**
 
@@ -90,7 +87,7 @@ Mình mò ở trên hàm main thì thấy giá trị rax là địa chỉ của 
  not     ecx
  dec     ecx
 ```
-`repne`(repeat while not equal); `scasb` đếm theo từng byte một. lệnh ` repne scasb` là để đếm số byte trong chuỗi với địa chỉ của chuỗi là `EDI` và bộ đếm `ECX`. Do lệnh này sẽ đếm và trừ ecx nên sau khi xong ta phải lật ngược lại bằng lệnh `not` còn 2 lệnh `dec ecx` bỏ đi cũng không ảnh hưởng gì.
+`repne`(repeat while not equal); `scasb` đếm theo từng byte một. lệnh ` repne scasb` là để đếm số byte trong chuỗi với địa chỉ của chuỗi là `EDI` và bộ đếm `ECX`. `repne scasb` sẽ lặp lại lệnh `scasb` cho đến khi byte tại vị trí con trỏ `RDI` bằng giá trị byte tại thanh ghi `AL` hoặc thanh ghi `ecx` trở thành 0. Do lệnh này sẽ đếm và trừ ecx nên sau khi xong ta phải lật ngược lại bằng lệnh `not`.
 
 ![](./img/jns.png)
 
@@ -110,7 +107,7 @@ Hàm này lại có thêm 1 vòng lặp nữa. Như ta đã biết thì ecx là 
 
 ![](./img/p7.png)
 
-Mình đã gạch những lệnh jump làm rối code. Sau khi gạch thì 
+Mình đã khoanh những đoạn code chúng ta cần để ý. Còn những lệnh jump kia chỉ làm rối code. 
 ```
 movsxd  r10, r11d
 mov     rbx, rdx
@@ -148,7 +145,7 @@ Lệnh `test r10b,r10b` thức chất là lệnh `AND` nhưng `test` không lưu
 
 Nếu bằng `r10 = 1` thì nhảy vào `loc_4008857`. Sau đó 4 dòng đầu (không tính code làm rối) gán `r11b` = kí tự đang xét hiện tại của string ta nhập vào.
 
-Tương tự như thế thì `al` = kí tự đang xét hiện tại của địa chỉ `unk_4008EB`. Sau đó so sánh `r11b` với `al`. Từ đó mình nghĩ string ở địa chỉ của `unk_400EB` là cipher
+Tương tự như thế thì `al` = kí tự đang xét hiện tại của địa chỉ `unk_4008EB`. Sau đó so sánh `r11b` với `al`. Từ đó mình nghĩ các byte ở địa chỉ của `unk_400EB` là cipher
 
 ![](./img/cipher.png)
 
@@ -169,7 +166,7 @@ Sau khi out vòng lặp thì `mov` giá trị của `r10b` vào `al` và khôi p
 
 Sau khi nhảy về hàm main thì lập tức nhảy đến `loc_40090D`. Ở đây thực hiên so sánh `rax với 0`. Nếu rax = 1 tức flag đã đúng (=> r10b không bị thay đổi). Còn rax = 0 tức flag đã sai.
 
-Từ những dữ kiện trên, mình đã viết script python để khái quát lại việc encode và kiểm tra flag có giống cipher không:
+Từ những dữ kiện trên, mình đã viết script python để khái quát lại việc encrypt và kiểm tra flag có giống cipher không:
 
 ```python
 flag =[ 0x70, 0x63, 0x74, 0x66, 0x7B]
