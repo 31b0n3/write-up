@@ -147,9 +147,9 @@ for m in model:
 
 ### 3. Brute Force
 
-Cách này mình cũng dùng tính chất mã hóa đối xứng của `Xor`. Mình có 2 cách là BruteForce xuôi và ngược.
+Cách này mình cũng dùng tính chất mã hóa đối xứng của `Xor`. Mình có 2 cách là Brute Force xuôi và ngược.
 
-- BruteForce xuôi là BruteForce từng kí tự một và sau khi encrypt mà giống cipher đã cho thì ok.
+- Brute Force xuôi là Brute Force từng kí tự một và sau khi encrypt mà giống cipher đã cho thì ok.
 
 ```python
 def  get_last_4_bit(target):
@@ -195,7 +195,7 @@ for i in flag:
     print(chr(i),end="")
 ```
 
-- BruteForce ngược là BruteForce byte cuối cùng của mảng trước và điều kiện dừng là `Đầu F1 ^ Đuôi F5 == Đuôi C5`. Thuật toán như hình dưới đây:
+- Brute Force ngược là Brute Force byte cuối cùng của mảng trước và điều kiện dừng là `Đầu F1 ^ Đuôi F5 == Đuôi C5`. Thuật toán như hình dưới đây:
 
 ![](./img/bf.png)
 
