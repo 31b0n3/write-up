@@ -28,7 +28,7 @@ Sau khi mở file bằng ida thì ta đã có thể xem luôn được mã giả
 
 ![](./img/p2.png)
 
-<center>
+</center>
 
 `v7` là địa chỉ lưu trữ kí tự thứ 1 ;`v6` là địa chỉ lưu trữ kí tự thứ 2 ta nhập vào. Do đó, cả đoạn code này chỉ là tính chiều dài `password` ta nhập vào.
 
