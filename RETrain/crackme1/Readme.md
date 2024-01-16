@@ -24,7 +24,11 @@ Sau khi mở file bằng ida thì ta đã có thể xem luôn được mã giả
 
 `sub_4014D0("%300[^\n]s", (char)&v5);` dòng này yêu cầu chúng ta nhập kí tự vào địa chỉ của `v5`; `%300[^\n]` nghĩa là chúng ta được phép nhập tối đa 300 kí tự và kết thúc đọc khi gặp `\n`.
 
+<center>
+
 ![](./img/p2.png)
+
+<center>
 
 `v7` là địa chỉ lưu trữ kí tự thứ 1 ;`v6` là địa chỉ lưu trữ kí tự thứ 2 ta nhập vào. Do đó, cả đoạn code này chỉ là tính chiều dài `password` ta nhập vào.
 
