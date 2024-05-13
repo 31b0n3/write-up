@@ -7,14 +7,10 @@
 <center>
 
 ![](./img/vmcode.png)
-Như bài vmcode lần trước thì ta dễ dàng đoán được đây là vmcode 
+Chương trình tạo lập giá trị cho các biến 
 </center>
 
-Sau khi khai báo xong giá trị của các biến, chương trình cung cấp bộ nhớ cho 0x28 byte, tiếp đến check xem đã tạo thành công chưa. Nếu thành công thì đặt phần tử thứ 3 =-1 và phần tử thứ 4 thành địa chỉ được cấp phát. Sau đó đặt giá trị mà vùng nhớ đã cấp phát =0:
-
-![](./img/p1.png)
-
-Tiếp theo, chương trình yêu cầu chúng ta nhập 21 kí tự được lưu vào `Buffer`. Nếu nhập ít hơn 20 kí tự thì chương trình sẽ thoát:
+Tiếp đến, chương trình yêu cầu chúng ta nhập `>= 20` kí tự 
 
 ![](./img/p2.png)
 
@@ -34,7 +30,7 @@ Sau khi kết thúc vòng lặp while, chương trình gọi hàm để kiểm t
 
 ![](./img/p5.png)
 
-## Switchcase function
+##  Compilevmcode function
 
 Chương trình sẽ kiểm tra giá trị của `Buffer[4]` để gọi các hàm khác nhau. Ta thấy các hàm được gọi là địa chỉ được lấy từ giá trị của `addr0x28cpy` làm mốc:
 
@@ -52,14 +48,30 @@ Khi vào trong từng hàm mình thấy đều có điểm chung là đều lấ
 
 ![](./img/p10.png)
 
+Dựa vào dữ kiện trên, ta sẽ viết struct để phân tích dễ hơn nhé:
+
+``` c
+struct addr0x28
+{
+  QWORD vftable;
+  QWORD isba1;
+  QWORD isba2;
+  QWORD numcount;
+  QWORD addrstart;
+};
+
+```
+
+Trong struct này, `addrstart` là địa chỉ bắt đầu của mảng; `numcount` là biến chỉ vị trí của phần tử đang xét trong mảng 
+
 Chúng ta hãy phân tích rõ hơn từng hàm nhé
 
 ### sub_7FF63FA21350 || CMP
 
-- `result` sẽ chứa địa chỉ của phần tử chương trình đang chỉ vào
+- `result` sẽ chứa địa chỉ của phần tử chương trình đang xét
 - Kiểm tra xem `Buffer[0]` có bằng 1 không
-    - Có thì sẽ compare 1 WORD của `result -3` với `result -1`, kết quả lưu tại result -3 ; `a1 +24` giảm đi 2
-    - Không thì sẽ compare 1 BYTE của `result` với `result -1`, kết quả lưu tại result -1; `a1 +24` giảm đi 1
+    - Có thì sẽ compare 1 WORD của `result -3` với `result -1`, kết quả lưu tại `result -3` ; `numcount` giảm đi 2 (để cho trường hợp sau xét phần tử ngay sau result vừa được lưu vào mảng)
+    - Không thì sẽ compare 1 BYTE của `result` với `result -1`, kết quả lưu tại `result -1`; `numcount` giảm đi 1
 
 ![](./img/p9.png)
 
@@ -67,7 +79,7 @@ Chúng ta hãy phân tích rõ hơn từng hàm nhé
 
 ### sub_7FF63FA215A0 || XOR
 
-Tương tự như hàm `cmp` nhưng ở hàm này, nếu `Buffer[0]` = 1 thì lấy 2 kí tự ở vị trí `result -3` với `result -1` `XOR` với nhau và lưu vào `result -3`; `a1 +24` giảm đi 2. Còn nếu =0 thì lấy 1 byte `result` XOR với `result -1`
+Tương tự như hàm `cmp` nhưng ở hàm này, nếu `Buffer[0]` = 1 thì lấy 2 kí tự ở vị trí `result -3` với `result -1` `XOR` với nhau và lưu vào `result -3`; `numcount` giảm đi 2. Còn nếu =0 thì lấy 1 byte `result` XOR với `result -1`
 
 ![](./img/XOR.png)
 
@@ -95,13 +107,13 @@ Từ 2 hàm này mình đoán là các hàm sau cũng đảm nhận những ch�
 
 ### sub_7FF63FA214A0
 
-Ở hàm này thì chỉ giảm giá trị của `a1 +24`
+Ở hàm này thì chỉ giảm giá trị của `numcount`
 
 ![](./img/p11.png)
 
 ### sub_7FF63FA21390
 
-Hàm này kiểm tra giá trị của `a1 +32` =1 && `a1 +24` != 0
+Hàm này kiểm tra giá trị của `a1 +32` =1 && `numcount` != 0
 
 ![](./img/p12.png)
 
@@ -116,7 +128,9 @@ Vậy là đã phân tích xong ý nghĩa của các hàm. Bây giờ chúng ta 
 
 ## REVERSE SCRIPT
 
-Đầu tiên chúng ta sẽ lấy vmcode trước. Mình vào địa chỉ của `v32[0]` để lấy làm điểm bắt đầu:
+Qua những phân tích bên trên, ta có thể thấy chương trình sẽ lấy các giá trị đã tạo lập ở đầu hàm main để encrypt flag của chúng ta => những giá trị đó là vmcode.
+
+Vậy nên đầu tiên chúng ta sẽ lấy vmcode trước. Mình vào địa chỉ của `v32[0]` để lấy làm điểm bắt đầu:
 
 ![](./img/start.png)
 
