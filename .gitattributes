@@ -1,0 +1,2 @@
+flag_enc filter=lfs diff=lfs merge=lfs -text
+flag.mp4 filter=lfs diff=lfs merge=lfs -text
