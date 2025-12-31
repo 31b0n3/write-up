@@ -1,0 +1,18 @@
+version: '3'
+services:
+  bank_challenge:
+    build: .
+    ports:
+      - "1402:1402"
+    restart: always
+    
+    read_only: true
+    
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 128M
+    
+    cap_drop:
+      - ALL
