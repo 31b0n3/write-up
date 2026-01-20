@@ -16,8 +16,10 @@ Vậy làm sao để chúng ta có thể bypass và tạo được shell và nh�
 
 ## Exploid
 
+
 - Trước hết chúng ta phải bypass được hàm kiểm tra opcode của `syscall`.
 
+  **CÁCH 1**
     - Ý tưởng của mình là sẽ ghi vào shell code của mình opcode `0x0F04` rồi khi chương trình thực thi shellcode, mình sẽ cộng byte `0x04` thành `0x05`:
 
     ```asm
@@ -31,6 +33,11 @@ Vậy làm sao để chúng ta có thể bypass và tạo được shell và nh�
     ```
     - Từ đó khi mình cần chạy `syscall` thì chỉ cần nhập `call sys_call` thôi
 
+  **CÁCH 2**: 
+
+    ![](./img/strlen.png)
+
+    - Do hàm `strlen()` sẽ dừng khi gặp byte `0` vậy nên ta chỉ cần cho byte `0` vào shellcode trước lệnh `syscall` là được. Như vậy vòng lặp for chỉ kiểm tra đến byte `0` ta thêm vào thôi.
 
 
 - Tiếp đến chúng ta làm sao để có thể input và output khi chương trình đã đóng `fd`.
@@ -103,6 +110,11 @@ p.interactive()
 
 ```
 
+#### Solve script2: [newsolve.py](./chall/newsolve.py)
+
+
 Bây giờ ta listen port `12345` và thực thi chương trình thôi:
 
 ![](./img/flag.png)
+
+
