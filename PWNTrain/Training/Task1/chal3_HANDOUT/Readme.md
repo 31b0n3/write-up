@@ -14,7 +14,7 @@ Về cơ bản, chương trình setup rồi cho user nhập dữ liệu vào bi�
 
 Vậy làm sao để chúng ta có thể bypass và tạo được shell và nhập được ?
 
-## Exploid
+## Exploit
 
 
 - Trước hết chúng ta phải bypass được hàm kiểm tra opcode của `syscall`.

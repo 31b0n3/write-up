@@ -22,7 +22,7 @@ Ta dùng IDA để xem chi tiết chương trình làm gì:
 
 Để ý thì ở trong binary còn có hàm `giveshell`. Vì vậy mục tiêu của ta là bypass canary và ghi đè `return address` để có thể tạo được shell. Vậy làm sao để bypass được canary???
 
-## Exploid
+## Exploit
 
 - Khi chương trình tạo thread mới bằng hàm `pthread_create()` thì cấu trúc `tls` sẽ được ánh xạ lên đầu stack của thread mới trong đó có cả canary. Vì vậy mình đã tính toán số byte từ data nhập vào đến địa chỉ chứa canary (địa chỉ mà ta thường thấy chương trình lấy `fs:0x28`):
 
