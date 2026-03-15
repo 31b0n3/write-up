@@ -1,7 +1,3 @@
-Task3:
-- Tìm hiểu các struct liên quan đến heap: chunk, bin, arena,...
-- Tìm hiểu cơ chế cấp phát động, giải phóng bộ nhớ heap, các bug liên quan đến heap
-
 # HEAP EXPLOIT
 
 # Concept
