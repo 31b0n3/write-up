@@ -18,7 +18,7 @@ def GDB():
     if not args.REMOTE:
         gdb.attach(p, gdbscript='''
         b* main +124
-
+        
         c
         ''')
         sleep(1)
@@ -27,12 +27,12 @@ def GDB():
 if args.REMOTE:
     p = remote('')
 else:
-    # p = gdb.debug([exe.path], gdbscript='''
-    #     b* main +181
-
-    #     c
-    #     ''')
-    p = process([exe.path])
+    p = gdb.debug([exe.path], gdbscript='''
+        b* main +216
+        b* fread + 84
+        c
+        ''')
+    # p = process([exe.path])
 # GDB()
 # input("a")
 p.recvuntil("my aura: ")
